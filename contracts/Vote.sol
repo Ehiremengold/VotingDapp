@@ -14,7 +14,6 @@ contract Vote is Ownable {
     // map user to if they have voted or not
     mapping(address => UserState) public userToUserState;
     mapping(address => Candidates) public voterToCandidate;
-    address public voter;
     enum VotingStatus {
         OPEN,
         CLOSED
@@ -36,7 +35,6 @@ contract Vote is Ownable {
 
     constructor() public {
         userstate.voted = false;
-        userToUserState[msg.sender].voted = false;
         votingstatus = VotingStatus.CLOSED;
     }
 
@@ -46,21 +44,20 @@ contract Vote is Ownable {
     }
 
     function voteCandidateA() public {
-        voter = msg.sender;
         require(
             votingstatus == VotingStatus.OPEN,
             "voting has not started yet!"
         );
         require(
-            userToUserState[voter].voted == false,
+            userToUserState[msg.sender].voted == false,
             "you have voted already"
         );
         // what candidate user is voting for
         candidatechoice = Candidates(0);
-        voterToCandidate[voter] = candidatechoice;
+        voterToCandidate[msg.sender] = candidatechoice;
         // increment that candidates vote count
         candidateAvotes = candidateAvotes + 1;
-        userToUserState[voter].voted = true;
+        userToUserState[msg.sender].voted = true;
     }
 
     function candidatesAVoteCount() public view returns (uint256) {
@@ -68,21 +65,20 @@ contract Vote is Ownable {
     }
 
     function voteCandidateB() public {
-        voter = msg.sender;
         require(
             votingstatus == VotingStatus.OPEN,
             "voting has not started yet!"
         );
         require(
-            userToUserState[voter].voted == false,
+            userToUserState[msg.sender].voted == false,
             "you have voted already"
         );
         // what candidate user is voting for
         candidatechoice = Candidates(1);
-        voterToCandidate[voter] = candidatechoice;
+        voterToCandidate[msg.sender] = candidatechoice;
         // increment that candidates vote count
         candidateBvotes = candidateBvotes + 1;
-        userToUserState[voter].voted = true;
+        userToUserState[msg.sender].voted = true;
     }
 
     function candidatesBVoteCount() public view returns (uint256) {
@@ -90,21 +86,20 @@ contract Vote is Ownable {
     }
 
     function voteCandidateC() public {
-        voter = msg.sender;
         require(
             votingstatus == VotingStatus.OPEN,
             "voting has not started yet!"
         );
         require(
-            userToUserState[voter].voted == false,
+            userToUserState[msg.sender].voted == false,
             "you have voted already"
         );
         // what candidate user is voting for
         candidatechoice = Candidates(2);
-        voterToCandidate[voter] = candidatechoice;
+        voterToCandidate[msg.sender] = candidatechoice;
         // increment that candidates vote count
         candidateCvotes = candidateCvotes + 1;
-        userToUserState[voter].voted = true;
+        userToUserState[msg.sender].voted = true;
     }
 
     function candidatesCVoteCount() public view returns (uint256) {
